@@ -1,1 +1,5 @@
 /.idea/
+/lib/api/secret.dart
+/.idea/
+/.dart_tool/
+/build/
