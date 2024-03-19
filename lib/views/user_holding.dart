@@ -10,8 +10,6 @@ class UserAssetsScreen extends StatefulWidget {
 class _UserAssetsScreenState extends State<UserAssetsScreen> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Container();
   }
-
 }

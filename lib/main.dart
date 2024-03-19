@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:varsity_app/views/root.dart';
 import 'package:varsity_app/views/splash.dart';
 
 void main() {
@@ -15,7 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp(
-        title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          title: 'PandaiTrades',
         theme: ThemeData(
           fontFamily: 'ProximaNova',
           brightness: Brightness.dark,

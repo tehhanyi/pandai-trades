@@ -8,10 +8,17 @@ class WatchlistScreen extends StatefulWidget {
 }
 
 class _WatchlistScreenState extends State<WatchlistScreen> {
+
+  List<Widget> _renderCard(){
+    return [Container(),Container()];
+  }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _renderCard().length,
+          itemBuilder: (BuildContext context, int index) => _renderCard()[index]);
   }
 
 }

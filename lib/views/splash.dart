@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) =>
     Future.delayed(Duration(seconds: 3)).then((value) async =>
-    await Navigator.push(context, MaterialPageRoute(builder: (context) =>  RootScreen(tab: 1)))));
+    await Navigator.push(context, MaterialPageRoute(builder: (context) =>  RootScreen(tab: 0)))));
     super.initState();
   }
 
@@ -47,13 +47,13 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    new FlutterLogo(size: 100.0,),
-                    // CircleAvatar(
-                    //   //Here you load you image
-                    //   backgroundImage: AssetImage("logo.png"), //put logo here
-                    //   radius: MediaQuery.of(context).size.width * 0.25,
-                    // )
-                    Text('PandiTrades', style: TextStyle(fontSize: 30.sp, color: Colors.white,decoration: TextDecoration.none))
+                    CircleAvatar(
+                      //Here you load you image
+                      backgroundImage: AssetImage("assets/images/logo.png"), //put logo here
+                      radius: 11.w,
+                    ),
+                    SizedBox(width: 1.w),
+                    Text('PandaiTrades', style: TextStyle(fontSize: 30.sp, color: Colors.white,decoration: TextDecoration.none))
                   ],
                 )
 
