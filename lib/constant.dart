@@ -1,1 +1,1 @@
-String baseUrl = '';
+String baseUrl = 'https://www.alphavantage.co/query?';
