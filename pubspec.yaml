@@ -1,5 +1,5 @@
 name: varsity_app
-description: Mobile App to enchance financial literacy for Varsity Hackathon 2024
+description: Mobile App to enhance financial literacy for Varsity Hackathon 2024
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -9,20 +9,18 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.1.3 <4.0.0'
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
   dio: ^4.0.6
+#  equatable:
   shared_preferences:
   swipe_cards: ^2.0.0+1
   sizer:
+  csv: ^6.0.0
+  animated_text_kit: ^4.2.2
+  confetti: ^0.7.0
 
 dev_dependencies:
   flutter_test:
