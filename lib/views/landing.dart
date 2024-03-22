@@ -2,8 +2,11 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:swipe_cards/draggable_card.dart';
 import 'package:swipe_cards/swipe_cards.dart';
+import 'package:varsity_app/views/widgets/see_more.dart';
+import 'package:varsity_app/views/widgets/swipe_cards_item.dart';
 import '../models/stocks.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -15,39 +18,22 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-  List<SwipeItem> _swipeItems = <SwipeItem>[];
-  MatchEngine? _matchEngine;
+  List<SwipeItem> _swipeItems = [];
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  MatchEngine? _matchEngine;
   List<Stocks> stonks = [];
   bool isCelebrating = false;
   final controller = ConfettiController();
-  // List<String> _names = [
-  //   "Red",
-  //   "Blue",
-  //   "Green",
-  //   "Yellow",
-  //   "Orange",
-  //   "Grey",
-  //   "Purple",
-  //   "Pink"
-  // ];
-  // List<Color> _colors = [
-  //   Colors.red,
-  //   Colors.blue,
-  //   Colors.green,
-  //   Colors.yellow,
-  //   Colors.orange,
-  //   Colors.grey,
-  //   Colors.purple,
-  //   Colors.pink
-  // ];
+  double _panelHeightOpen = 90.h;
+  double _panelHeightClosed = 10.h;
+  double _fabHeight = 15.h;
 
   @override
   void initState() {
     stonks = widget.stocks;
     for (var stock in stonks) {
       _swipeItems.add(SwipeItem(
-          content: stock,//Stocks(text: _names[i], color: _colors[i]),
+          content: stock,
           likeAction: () {
             snackBar("Added ${stock.name} to Watchlist");
             controller.play();
@@ -68,95 +54,96 @@ class _LandingScreenState extends State<LandingScreen> {
     _matchEngine = MatchEngine(swipeItems: _swipeItems);
     super.initState();
   }
-
-
-  Widget flag(String text){
-    return Container(
-      margin: const EdgeInsets.all(15.0),
-      padding: const EdgeInsets.all(3.0),
-      // decoration: BoxDecoration(
-      //     border: Border.all(color: Colors.green)
-      // ),
-      child: Text(text),
-    );
-  }
   snackBar(String text){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(text),
       duration: Duration(milliseconds: 500),
     ));
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
         appBar: null,//AppBar(title: Text(widget.title!),),
         body: Container(
-            child: Stack(
+            child:
+            Stack(
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 5.w),
-                    height: MediaQuery.of(context).size.height - kToolbarHeight,
-                    child: SwipeCards(
-                      matchEngine: _matchEngine!,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          padding: EdgeInsets.all(1.w),
-                          alignment: Alignment.center,
-                          color: _swipeItems[index].content.color,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(_swipeItems[index].content.symbol, style: TextStyle(fontSize: 48.sp,fontWeight: FontWeight.bold)),
-                              Text(_swipeItems[index].content.name,style: TextStyle(fontSize: 16.sp, color: Colors.grey),textAlign: TextAlign.center),
-                            ],
-                          )
-                        );
-                      },
-                      onStackFinished: () {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Stack Finished"),
-                          duration: Duration(milliseconds: 500),
-                        ));
-                      },
-                      itemChanged: (SwipeItem item, int index) =>  print("item: ${item.content.symbol}, index: $index"),
-                      leftSwipeAllowed: true,
-                      rightSwipeAllowed: true,
-                      upSwipeAllowed: false,
-                      fillSpace: true,
-                      likeTag: flag('Add to Watchlist'),
-                      nopeTag: flag('Not Interested'),
-                      superLikeTag:flag('Buy paper stocks'),
-                    ),
+                  SlidingUpPanel(
+                    maxHeight: 80.h ,
+                    minHeight: 10.h,
+                    parallaxEnabled: true,
+                    parallaxOffset: .5,
+                    body: SwipeCardItem(engine: _matchEngine, swipeItems: _swipeItems),
+                    panelBuilder: (sc) => SeeMore(sc: sc, swipeItem: _swipeItems[0]),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(18.0),
+                        topRight: Radius.circular(18.0)),
+                    onPanelSlide: (double pos) => setState(() {
+                      _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
+                          _fabHeight;
+                    }),
                   ),
                   Align(alignment: Alignment.topCenter,
-                    child:ConfettiWidget(
-                      confettiController: controller,
-                      shouldLoop: false,
-                      blastDirectionality: BlastDirectionality.explosive,
-                    )
+                      child:ConfettiWidget(
+                        confettiController: controller,
+                        shouldLoop: false,
+                        blastDirectionality: BlastDirectionality.explosive,
+                      )
                   )
-
-                  // Align(
-                  //   alignment: Alignment.bottomCenter,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //     children: [
-                  //       ElevatedButton(
-                  //           onPressed: () {_matchEngine!.currentItem?.nope();},
-                  //           child: Text("Nope")),
-                  //       ElevatedButton(
-                  //           onPressed: () {_matchEngine!.currentItem?.superLike();},
-                  //           child: Text("Superlike")),
-                  //       ElevatedButton(
-                  //           onPressed: () {
-                  //             _matchEngine!.currentItem?.like();
-                  //           },
-                  //           child: Text("Like"))
-                  //     ],
-                  //   ),
-                  // )
-    ])));
+                ])
+            // DraggableHome(
+            //   // leading: Text("i am leading"),
+            //   title: const Text("TEst"),
+            //   headerWidget:,
+            //   // Container(
+            //   //   color: Colors.blue,
+            //   //   child: Center(
+            //   //     child: Text(
+            //   //       "Title",
+            //   //       style: Theme.of(context)
+            //   //           .textTheme
+            //   //           .displayMedium!
+            //   //           .copyWith(color: Colors.white70),
+            //   //     ),
+            //   //   ),
+            //   // ),
+            //   headerBottomBar:
+            //   Row(
+            //     mainAxisSize: MainAxisSize.max,
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Icon(Icons.settings, color: Colors.white,),
+            //     ],
+            //   ),
+            //   body: [
+            //
+            //   ],
+            //   fullyStretchable: false,
+            //   // Align(
+            //         //   alignment: Alignment.bottomCenter,
+            //         //   child: Row(
+            //         //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         //     children: [
+            //         //       ElevatedButton(
+            //         //           onPressed: () {_matchEngine!.currentItem?.nope();},
+            //         //           child: Text("Nope")),
+            //         //       ElevatedButton(
+            //         //           onPressed: () {_matchEngine!.currentItem?.superLike();},
+            //         //           child: Text("Superlike")),
+            //         //       ElevatedButton(
+            //         //           onPressed: () {
+            //         //             _matchEngine!.currentItem?.like();
+            //         //           },
+            //         //           child: Text("Like"))
+            //         //     ],
+            //         //   ),
+            //         // )
+            //   // expandedBody: const CameraPreview(),
+            //   backgroundColor: Theme.of(context).primaryColorDark,
+            //   appBarColor: Colors.greenAccent,
+            // )
+        ));
   }
 }

@@ -10,7 +10,7 @@ class Stocks {
   final String exchange;
   final String assetType;
   final DateTime ipoDate;
-  final Color color;
+  final Color? color;
   // final DateTime? delisting;
   bool swiped;
 
@@ -34,7 +34,7 @@ class Stocks {
         assetType: json['assetType'],
         ipoDate: DateTime.parse(json['ipoDate']) ,
         swiped: json['swiped'] == 0? false: true,
-        color: json['assetType'] == 'Stock' ? Colors.redAccent : Colors.greenAccent
+        color: json['assetType'] == 'Stock' ? Colors.red[50] : Colors.blue[50]
     );
   }
 }
