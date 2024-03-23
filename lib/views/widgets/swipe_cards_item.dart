@@ -38,8 +38,8 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 5.w),
-      margin: EdgeInsets.only(bottom: 10.h),
+      padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 5.w),
+      margin: EdgeInsets.only(bottom: 30.h),
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: BlocBuilder<CardsBloc, CardsState>(builder: (context, state){
         if (state.items.isNotEmpty) {

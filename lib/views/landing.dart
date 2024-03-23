@@ -22,7 +22,15 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        appBar: null,//AppBar(title: Text(widget.title!),),
+        appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title:Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(backgroundImage: AssetImage("assets/images/logo.png"), radius: 5.w),
+                  SizedBox(width: 2.w),
+                  Text('PandaiTrades', style: TextStyle(fontSize: 20.sp, color: Colors.white, fontWeight: FontWeight.bold))
+                ])),//AppBar(title: Text(widget.title!),),
         body: Container(
             child:
                   SlidingUpPanel(

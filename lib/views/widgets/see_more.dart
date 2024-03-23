@@ -20,7 +20,7 @@ class _SeeMoreState extends State<SeeMore> {
 
   Widget info(String title, String desc){
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -31,10 +31,23 @@ class _SeeMoreState extends State<SeeMore> {
         ));
   }
 
+  dynamic formatImagePath(String? imagePath) {
+    if (imagePath == null || imagePath.isEmpty) {
+      return 'https://cpworldgroup.com/wp-content/uploads/2021/01/placeholder.png';
+    } else if (imagePath.contains('png')) {
+      return Image.network(imagePath, width: 30.w, fit: BoxFit.cover);
+    } else if (imagePath.contains('svg')){
+      return SvgPicture.network(imagePath, width: 30.w, fit: BoxFit.cover);
+  }
+  }
+
   Widget stockDetails(Stocks stocks){
     List<Widget> widgets = [];
     widgets.add(Row(mainAxisAlignment: MainAxisAlignment.center,
-      children: [SvgPicture.network(stocks.details!.imagePath, width: 30.w, fit: BoxFit.cover)],
+      children: [
+        formatImagePath(stocks.details!.imagePath)
+      ]
+        // SvgPicture.network(stocks.details!.imagePath, width: 30.w, fit: BoxFit.cover)],
     ));
     widgets.add(Center(child:Text("${stocks.name}", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey))));
     widgets.add(info("Industry", stocks.details!.industry));
@@ -59,11 +72,7 @@ class _SeeMoreState extends State<SeeMore> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 30,
-                  height: 5,
-                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                ),
+                Container(width: 30, height: 5, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(12.0))),),
               ],
             ),
             Container(
