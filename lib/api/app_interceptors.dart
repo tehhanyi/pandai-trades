@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'secret.dart';
 
 import 'local_repo.dart';
 import 'local_service.dart';
@@ -14,8 +13,7 @@ class AppInterceptors extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    options.headers['api-key'] = apiKey;
-
+    // options.headers['api-key'] = apiKey;
     return handler.next(options);
   }
 

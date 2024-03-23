@@ -18,11 +18,14 @@ dependencies:
   shared_preferences:
   swipe_cards: ^2.0.0+1
   sizer:
+  sliding_up_panel: ^2.0.0+1
   csv: ^6.0.0
   animated_text_kit: ^4.2.2
   confetti: ^0.7.0
   draggable_home: ^1.0.5
-  sliding_up_panel: ^2.0.0+1
+  equatable: ^2.0.5
+  flutter_bloc: ^8.0.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

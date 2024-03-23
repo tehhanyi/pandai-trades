@@ -16,27 +16,27 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   int selectedTab = 1;
-  List<Stocks> stonks = [];
+  // List<Stocks> stonks = [];
 
   @override
   void initState() {
-    allStocks();
+    // allStocks();
     if (widget.tab != null) selectedTab = widget.tab!;
     super.initState();
   }
 
   Color selectedColor() =>  Colors.greenAccent;//Theme.of(context).primaryColor,
 
-  allStocks() async {
-    stonks = await LocalService().getAllStocks();
-  }
+  // allStocks() async {
+  //   stonks = await LocalService().getAllStocks();
+  // }
 
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> widgetOptions = <Widget>[
       UserAssetsScreen(),
-      LandingScreen(stocks: stonks),
+      LandingScreen(),
       WatchlistScreen(),
     ];
 

@@ -1,19 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:varsity_app/views/splash.dart';
 
+import 'api/local_repo.dart';
+import 'api/local_service.dart';
+import 'bloc/cards_bloc/card_bloc.dart';
+
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _AppState();
+}
+
+class _AppState extends State<MyApp> {
+  final LocalRepository _localRepository = LocalRepository(service: LocalService());
+
   @override
   Widget build(BuildContext context) {
-    return Sizer(builder: (context, orientation, deviceType) {
-      return MaterialApp(
+    return MultiProvider(
+        providers: [
+          BlocProvider<CardsBloc>(
+              create: (context) => CardsBloc(repository: _localRepository,
+              )..add(GetAllCardsItems()))
+          ],
+        child: Sizer(builder: (context, orientation, deviceType) {
+      return  Builder(builder: (context) {
+        return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'PandaiTrades',
         theme: ThemeData(
@@ -27,6 +48,7 @@ class MyApp extends StatelessWidget {
         // RootScreen(tab: 1),
       );
     });
+      }));
   }
 }
 

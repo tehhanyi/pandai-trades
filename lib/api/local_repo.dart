@@ -1,3 +1,4 @@
+import '../models/stocks.dart';
 import 'local_service.dart';
 
 class LocalRepository {
@@ -5,5 +6,9 @@ class LocalRepository {
     required this.service,
   });
   final LocalService service;
+
+  Future<List<Stocks>> getAllStocks() async => service.getAllStocks();
+
+  Future<Profile> getCompanyProfile(String symbol) async => service.getCompanyProfile(symbol);
 
 }

@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:varsity_app/api/secret.dart';
 
 import '../models/stocks.dart';
+import 'api.dart';
 
 class LocalService {
   LocalService();
@@ -26,4 +28,11 @@ class LocalService {
     // sharedPreferences.setString('watchlist', response.toString());
   }
 
+  Future<Profile> getCompanyProfile(String symbol) async {
+    var response = await Api().dio.get('/stock/profile2?symbol=$symbol&token=$apiKey');
+    Map responseBody = response.data;
+    print('getCompanyProfile\n$response');
+
+    return Profile.fromJson(responseBody);
+  }
 }

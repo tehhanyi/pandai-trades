@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) =>
     Future.delayed(Duration(seconds: 3)).then((value) async =>
-    await Navigator.push(context, MaterialPageRoute(builder: (context) =>  RootScreen(tab: 0)))));
+    await Navigator.push(context, MaterialPageRoute(builder: (context) =>  RootScreen(tab: 1)))));
     super.initState();
   }
 
@@ -53,7 +53,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       radius: 11.w,
                     ),
                     SizedBox(width: 1.w),
-                    Text('PandaiTrades', style: TextStyle(fontSize: 30.sp, color: Colors.white,decoration: TextDecoration.none))
+                    Text('PandaiTrades',
+                        style: TextStyle(fontSize: 30.sp, color: Colors.white,decoration: TextDecoration.none))
                   ],
                 )
 

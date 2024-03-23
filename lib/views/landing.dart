@@ -1,65 +1,24 @@
 
-import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:swipe_cards/draggable_card.dart';
-import 'package:swipe_cards/swipe_cards.dart';
 import 'package:varsity_app/views/widgets/see_more.dart';
 import 'package:varsity_app/views/widgets/swipe_cards_item.dart';
+import '../bloc/cards_bloc/card_bloc.dart';
 import '../models/stocks.dart';
 
 class LandingScreen extends StatefulWidget {
-  final List<Stocks> stocks;
-  LandingScreen({Key? key, required this.stocks}) : super(key: key);
+  // final List<Stocks> stocks;
+  LandingScreen({Key? key}) : super(key: key);
 
   @override
   _LandingScreenState createState() => _LandingScreenState();
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-  List<SwipeItem> _swipeItems = [];
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  MatchEngine? _matchEngine;
-  List<Stocks> stonks = [];
-  bool isCelebrating = false;
-  final controller = ConfettiController();
-  double _panelHeightOpen = 90.h;
-  double _panelHeightClosed = 10.h;
-  double _fabHeight = 15.h;
 
-  @override
-  void initState() {
-    stonks = widget.stocks;
-    for (var stock in stonks) {
-      _swipeItems.add(SwipeItem(
-          content: stock,
-          likeAction: () {
-            snackBar("Added ${stock.name} to Watchlist");
-            controller.play();
-            Future.delayed(Duration(seconds: 1)).then((value) => controller.stop());
-          },
-          nopeAction: () =>  snackBar("Not Interested in ${stock.name}"),
-          superlikeAction: () => snackBar("Buying ${stock.name}"),
-          onSlideUpdate: (SlideRegion? region) async {
-            print("Region $region");
-          }
-          ));
-    }
-
-    controller.addListener(() {
-      setState(() => isCelebrating = controller.state == ConfettiControllerState.playing);
-    });
-
-    _matchEngine = MatchEngine(swipeItems: _swipeItems);
-    super.initState();
-  }
-  snackBar(String text){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(text),
-      duration: Duration(milliseconds: 500),
-    ));
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,31 +26,23 @@ class _LandingScreenState extends State<LandingScreen> {
         appBar: null,//AppBar(title: Text(widget.title!),),
         body: Container(
             child:
-            Stack(
-                children: [
                   SlidingUpPanel(
                     maxHeight: 80.h ,
                     minHeight: 10.h,
                     parallaxEnabled: true,
                     parallaxOffset: .5,
-                    body: SwipeCardItem(engine: _matchEngine, swipeItems: _swipeItems),
-                    panelBuilder: (sc) => SeeMore(sc: sc, swipeItem: _swipeItems[0]),
+                    body: SwipeCardItem(),
+                        // engine: _matchEngine, swipeItems: _swipeItems),
+                    panelBuilder: (sc) => SeeMore(sc: sc),
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(18.0),
                         topRight: Radius.circular(18.0)),
-                    onPanelSlide: (double pos) => setState(() {
-                      _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
-                          _fabHeight;
-                    }),
+                    onPanelSlide: (double pos) =>
+                      BlocProvider.of<CardsBloc>(context).add(GetMoreInfo())
+                      // await updatePanel(_matchEngine?.currentItem);
+                      // _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _fabHeight;
                   ),
-                  Align(alignment: Alignment.topCenter,
-                      child:ConfettiWidget(
-                        confettiController: controller,
-                        shouldLoop: false,
-                        blastDirectionality: BlastDirectionality.explosive,
-                      )
-                  )
-                ])
+
             // DraggableHome(
             //   // leading: Text("i am leading"),
             //   title: const Text("TEst"),
