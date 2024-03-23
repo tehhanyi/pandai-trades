@@ -22,14 +22,11 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
 
   @override
   void initState() {
-    controller.addListener(() {
-      setState(() => isCelebrating = controller.state == ConfettiControllerState.playing);
-    });
-
-    // _matchEngine = MatchEngine(swipeItems: _swipeItems);
+    // controller.addListener(() {
+    //   setState(() => isCelebrating = controller.state == ConfettiControllerState.playing);
+    // });
     super.initState();
   }
-
 
   snackBar(String text){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -63,8 +60,7 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                 likeAction: () {
                   snackBar("Added ${stock.name} to Watchlist");
                   controller.play();
-                  Future.delayed(Duration(seconds: 1)).then((value) =>
-                      controller.stop());
+                  Future.delayed(Duration(seconds: 1)).then((value) => controller.stop());
                 },
                 nopeAction: () => snackBar("Not Interested in ${stock.name}"),
                 superlikeAction: () => snackBar("Buying ${stock.name}"),
@@ -126,11 +122,22 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                     )
                 )
               ]);
-        } else if (state.status.isLoading){
-          return CircularProgressIndicator();
-        } else {// if (state.status.isError){
-          return Center(child: Text('There seems to be an error getting cards, please try again later'));
-        }
+        } else
+          // if (state.status.isLoading){
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                child: CircularProgressIndicator(),
+              )
+            ],
+          );
+
+        // } else {// if (state.status.isError){
+        //   return Center(child: Text('There seems to be an error getting cards, please try again later'));
+        // }
     }));
 
   }
