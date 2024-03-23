@@ -45,7 +45,7 @@ class Stocks {
 
 class Profile {
   final String country;
-  final String currency;
+  final String? currency;
   final String industry;
   final String imagePath;
   final num marketCapitalisation;

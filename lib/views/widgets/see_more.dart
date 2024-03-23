@@ -23,7 +23,7 @@ class _SeeMoreState extends State<SeeMore> {
         padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
             SizedBox(height: 1.h),
             Text(desc, softWrap: true, style: TextStyle(color: Colors.black),),
@@ -49,12 +49,12 @@ class _SeeMoreState extends State<SeeMore> {
       ]
         // SvgPicture.network(stocks.details!.imagePath, width: 30.w, fit: BoxFit.cover)],
     ));
-    widgets.add(Center(child:Text("${stocks.name}", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey))));
+    widgets.add(Center(child:Container(padding: EdgeInsets.all(5), child:Text("${stocks.name}", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey)))));
     widgets.add(info("Industry", stocks.details!.industry));
-    widgets.add(info("Currency", stocks.details!.currency));
+    if (stocks.details!.currency != '') widgets.add(info("Currency", stocks.details!.currency!));
     widgets.add(info("Website", stocks.details!.website));
     widgets.add(info("Market Capitalisation", "\$${stocks.details!.marketCapitalisation.toStringAsFixed(2)}"));
-    widgets.add(info("Share Outstanding", "\$${stocks.details!.shareOutstanding.toStringAsFixed(2)}"));
+    if (stocks.details!.shareOutstanding != 0) widgets.add(info("Share Outstanding", "\$${stocks.details!.shareOutstanding.toStringAsFixed(2)}"));
 
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
@@ -78,7 +78,7 @@ class _SeeMoreState extends State<SeeMore> {
             Container(
               padding: EdgeInsets.symmetric(vertical: 3.h),
               alignment: Alignment.center,
-              child: Text("Read more of asset", style: TextStyle(fontSize: 20.sp, color: Colors.black)),
+              child: Text("Read more of security", style: TextStyle(fontSize: 20.sp, color: Colors.black)),
             ),
             BlocBuilder<CardsBloc, CardsState>(builder: (context, state){
               if (state.status.isSuccess && state.currentStock != null)
