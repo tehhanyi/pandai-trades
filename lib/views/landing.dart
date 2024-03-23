@@ -21,6 +21,47 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Column(
+        children: [
+          SizedBox(height: 5.5.h,),
+          IconButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext builderContext) {
+                      return Center(
+                          child: Column(mainAxisSize: MainAxisSize.min, children: [
+                            Container(
+                                width: 88.w,
+                                decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                                child: Padding(
+                                  padding: EdgeInsets.all(14.sp),
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text('About PandaiTrades', style: TextStyle(fontSize: 17.sp, color: Colors.black, fontWeight: FontWeight.bold)),
+                                        SizedBox(height: 10.sp),
+                                        Text('whatever about pandaitrade is blah blah blah it is super cute and everyone should use it', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+                                        Text('Swipe Right to add security\nSwipe Left to pass a security', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+                                        SizedBox(height: 10.sp),
+                                        CircleAvatar(backgroundImage: AssetImage("assets/images/logo.png"), radius: 7.w),
+
+                                      ]),
+                                ))
+                          ]));
+                    });
+              },
+              icon:  Icon(Icons.question_mark)),
+              // child:,
+          // IconButton(
+          //     onPressed: (){
+          //       ;
+          //       }, icon: Icon(Icons.question_mark)),
+          Spacer()
+        ],
+      ),
         key: _scaffoldKey,
         appBar: AppBar(
             automaticallyImplyLeading: false,

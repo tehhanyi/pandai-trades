@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:varsity_app/views/user_holding.dart';
 import 'package:varsity_app/views/watchlist.dart';
-
-import '../api/local_service.dart';
-import '../models/stocks.dart';
-import 'user_holding.dart';
 import 'landing.dart';
 
 class RootScreen extends StatefulWidget {
@@ -41,7 +38,7 @@ class _RootScreenState extends State<RootScreen> {
     ];
 
     final rootTab = <BottomNavigationBarItem>[
-      BottomNavigationBarItem(icon: Icon(Icons.stacked_line_chart),activeIcon: Icon(Icons.stacked_line_chart, color: selectedColor()), label: 'Assets'),
+      BottomNavigationBarItem(icon: Icon(Icons.stacked_line_chart),activeIcon: Icon(Icons.stacked_line_chart, color: selectedColor()), label: 'My Holdings'),
       BottomNavigationBarItem(icon: Icon(Icons.home_filled),activeIcon: Icon(Icons.home_filled, color: selectedColor()), label: 'Home'),
       BottomNavigationBarItem(icon: Icon(Icons.bar_chart), activeIcon: Icon(Icons.bar_chart, color: selectedColor()), label: 'Watchlist'),
     ];
@@ -56,50 +53,6 @@ class _RootScreenState extends State<RootScreen> {
         selectedItemColor: selectedColor() ,
         onTap: (index) => setState(() => selectedTab = index),
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      // floatingActionButton: Container(
-      //   child: Padding(
-      //     padding: EdgeInsets.symmetric(horizontal: 20.0),
-      //     child: Center(
-      //       child: Row(
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         crossAxisAlignment: CrossAxisAlignment.end,
-      //         children: [
-      //           BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
-      //             if (state.hideOpenCashBoxFAB) return Padding(
-      //               padding: EdgeInsets.symmetric(horizontal: 8.0), // Adjust the padding value as needed
-      //               child: OpenCashBoxFAB(),
-      //             );
-      //             else return Container();
-      //           }),
-      //           BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
-      //             if (!state.hideTimeInOutFAB) return Padding(
-      //               padding: EdgeInsets.symmetric(horizontal: 8.0), // Adjust the padding value as needed
-      //               child: TimeFAB(),
-      //             );
-      //             else return Container();
-      //           }),
-      //           BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
-      //             if (state.hideDishwareFAB) return Padding(
-      //               padding: EdgeInsets.symmetric(horizontal: 8.0), // Adjust the padding value as needed
-      //               child: DishFAB(),
-      //             );
-      //             else return Container();
-      //           }),
-      //           BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
-      //             if (state.hideStallVisibilityFAB) return Padding(
-      //               padding: EdgeInsets.symmetric(horizontal: 8.0), // Adjust the padding value as needed
-      //               child: VisibilityFAB(),
-      //             );
-      //             else return Container();
-      //           }),
-      //
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
-
     );
   }
 }

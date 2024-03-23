@@ -112,9 +112,9 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                       ElevatedButton(
                           onPressed: () {_matchEngine.currentItem?.nope();},
                           child: Icon(Icons.cancel)),
-                      ElevatedButton(
-                          onPressed: () {_matchEngine.currentItem?.superLike();},
-                          child:Icon(Icons.add)),// Text("Superlike")),
+                      // ElevatedButton(
+                      //     onPressed: () {_matchEngine.currentItem?.superLike();},
+                      //     child:Icon(Icons.add)),// Text("Superlike")),
                       ElevatedButton(
                           onPressed: () {
                             _matchEngine.currentItem?.like();
