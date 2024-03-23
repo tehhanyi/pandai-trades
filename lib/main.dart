@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:varsity_app/bloc/watchlist_bloc/watchlist_bloc.dart';
 import 'package:varsity_app/views/splash.dart';
 
 import 'api/local_repo.dart';
@@ -30,7 +31,10 @@ class _AppState extends State<MyApp> {
         providers: [
           BlocProvider<CardsBloc>(
               create: (context) => CardsBloc(repository: _localRepository,
-              )..add(GetAllCardsItems()))
+              )..add(GetAllCardsItems())),
+          BlocProvider<WatchListBloc>(
+              create: (context) => WatchListBloc(repository: _localRepository,
+              )..add(GetAllItemsItems()))
           ],
         child: Sizer(builder: (context, orientation, deviceType) {
       return  Builder(builder: (context) {

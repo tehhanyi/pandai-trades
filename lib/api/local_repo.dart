@@ -11,4 +11,6 @@ class LocalRepository {
 
   Future<Profile> getCompanyProfile(String symbol) async => service.getCompanyProfile(symbol);
 
+  Future<List<Stocks>> getAllWatchlist() async => service.getAllWatchlist();
+
 }

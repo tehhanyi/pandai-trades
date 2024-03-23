@@ -10,14 +10,6 @@ import 'api.dart';
 class LocalService {
   LocalService();
 
-  void addWatchlist() async {
-    var sharedPreferences = await SharedPreferences.getInstance();
-    final String response =
-    await rootBundle.loadString('assets/data/watchlist.json');
-
-    sharedPreferences.setString('watchlist', response.toString());
-  }
-
   Future<List<Stocks>> getAllStocks() async {
     final String response =  await rootBundle.loadString('assets/data/listed_stocks.json');
     var list = List<Stocks>.from(json.decode(response).map((data) => Stocks.fromJson(data)));
@@ -34,5 +26,22 @@ class LocalService {
     print('getCompanyProfile\n$response');
 
     return Profile.fromJson(responseBody);
+  }
+
+  void addWatchlist() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    final String response =
+    await rootBundle.loadString('assets/data/watchlist.json');
+
+    sharedPreferences.setString('watchlist', response.toString());
+  }
+
+  Future<List<Stocks>> getAllWatchlist() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    final String? response =  sharedPreferences.getString('watchlist');
+    if (response != null){
+
+    }
+    return [];
   }
 }

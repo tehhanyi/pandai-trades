@@ -2,7 +2,7 @@ part of 'card_bloc.dart';
 
 enum CardStatus { initial, success, error, loading, cardLoading, cardLoaded }
 
-extension FoodCartStatusX on CardStatus {
+extension CardStatusX on CardStatus {
   bool get isInitial => this == CardStatus.initial;
   bool get isSuccess => this == CardStatus.success;
   bool get isError => this == CardStatus.error;
