@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../bloc/cards_bloc/card_bloc.dart';
@@ -19,35 +20,23 @@ class _SeeMoreState extends State<SeeMore> {
 
   Widget info(String title, String desc){
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
             SizedBox(height: 1.h),
-            Text(desc, softWrap: true),
+            Text(desc, softWrap: true, style: TextStyle(color: Colors.black),),
           ],
         ));
   }
 
   Widget stockDetails(Stocks stocks){
     List<Widget> widgets = [];
-    widgets.add(Text("${stocks.symbol}", style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold, color: Colors.black)));
-    widgets.add(Container(
-        padding: EdgeInsets.symmetric(horizontal: 6.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Company Logo", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-            SizedBox(height: 1.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.network(stocks.details!.imagePath, width: 14.w, fit: BoxFit.cover)
-              ],
-            ),
-          ],
-        )));
+    widgets.add(Row(mainAxisAlignment: MainAxisAlignment.center,
+      children: [SvgPicture.network(stocks.details!.imagePath, width: 30.w, fit: BoxFit.cover)],
+    ));
+    widgets.add(Center(child:Text("${stocks.name}", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey))));
     widgets.add(info("Industry", stocks.details!.industry));
     widgets.add(info("Currency", stocks.details!.currency));
     widgets.add(info("Website", stocks.details!.website));
@@ -55,7 +44,7 @@ class _SeeMoreState extends State<SeeMore> {
     widgets.add(info("Share Outstanding", "\$${stocks.details!.shareOutstanding.toStringAsFixed(2)}"));
 
 
-    return ListView(children: widgets);
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
   }
 
   @override
@@ -85,7 +74,8 @@ class _SeeMoreState extends State<SeeMore> {
             BlocBuilder<CardsBloc, CardsState>(builder: (context, state){
               if (state.status.isSuccess && state.currentStock != null)
                 return stockDetails(state.currentStock!);
-              else return Column(
+              else if (state.status.isLoading)
+                return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
@@ -96,6 +86,7 @@ class _SeeMoreState extends State<SeeMore> {
                     ),
                     Text('Retrieving data...please wait!')
                   ]);
+              else return Center(child: Text('There seems to be an error getting cards, please try again later'));
               }),
           ],
         ));

@@ -7,9 +7,6 @@ import 'package:swipe_cards/swipe_cards.dart';
 import 'package:varsity_app/bloc/cards_bloc/card_bloc.dart';
 
 class SwipeCardItem extends StatefulWidget {
-  // final MatchEngine? engine;
-  // final List<SwipeItem> swipeItems;
-
   SwipeCardItem({Key? key}) : super(key: key);
 
   @override
@@ -19,22 +16,14 @@ class SwipeCardItem extends StatefulWidget {
 class _SwipeCardItemState extends State<SwipeCardItem> {
   final controller = ConfettiController();
   bool isCelebrating = false;
+  late MatchEngine _matchEngine;
 
-  @override
-  void initState() {
-    // controller.addListener(() {
-    //   setState(() => isCelebrating = controller.state == ConfettiControllerState.playing);
-    // });
-    super.initState();
-  }
-
-  snackBar(String text){
+  void snackBar(String text){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(text),
       duration: Duration(milliseconds: 500),
     ));
   }
-
   Widget flag(String text){
     return Container(
       margin: const EdgeInsets.all(15.0),
@@ -49,7 +38,8 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 5.w),
+      margin: EdgeInsets.only(bottom: 10.h),
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: BlocBuilder<CardsBloc, CardsState>(builder: (context, state){
         if (state.items.isNotEmpty) {
@@ -69,7 +59,7 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                 }
             ));
           }
-          MatchEngine _matchEngine = MatchEngine(swipeItems: _swipeItems);
+          _matchEngine = MatchEngine(swipeItems: _swipeItems);
           BlocProvider.of<CardsBloc>(context).add(UpdateEngine(_matchEngine));
           return Stack(
               children: [
@@ -114,13 +104,33 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                   nopeTag: flag('Not Interested'),
                   superLikeTag: flag('Buy paper stocks'),
                 ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {_matchEngine.currentItem?.nope();},
+                          child: Icon(Icons.cancel)),
+                      ElevatedButton(
+                          onPressed: () {_matchEngine.currentItem?.superLike();},
+                          child:Icon(Icons.add)),// Text("Superlike")),
+                      ElevatedButton(
+                          onPressed: () {
+                            _matchEngine.currentItem?.like();
+                          },
+                          child: Icon(Icons.add_chart))
+                    ],
+                  ),
+                ),
                 Align(alignment: Alignment.topCenter,
                     child: ConfettiWidget(
                       confettiController: controller,
                       shouldLoop: false,
                       blastDirectionality: BlastDirectionality.explosive,
                     )
-                )
+                ),
+
               ]);
         } else
           // if (state.status.isLoading){
@@ -134,7 +144,6 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
               )
             ],
           );
-
         // } else {// if (state.status.isError){
         //   return Center(child: Text('There seems to be an error getting cards, please try again later'));
         // }

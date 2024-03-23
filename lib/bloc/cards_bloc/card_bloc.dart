@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:swipe_cards/swipe_cards.dart';
-import 'package:varsity_app/views/widgets/swipe_cards_item.dart';
 
 import '../../api/local_repo.dart';
 import '../../models/stocks.dart';
@@ -31,7 +29,6 @@ class CardsBloc extends Bloc<CardEvent, CardsState> {
 
   void _mapGetAllCardsItemsEventToState(GetAllCardsItems event, Emitter<CardsState> emit) async {
     try {
-      // emit(state.copyWith(status: CardStatus.loading));
       final stocks = await repository.getAllStocks();
 
       emit(state.copyWith(items: stocks));
@@ -47,12 +44,14 @@ class CardsBloc extends Bloc<CardEvent, CardsState> {
   void _mapGetMoreInfoEventToState(GetMoreInfo event, Emitter<CardsState> emit) async {
     try {
       emit(state.copyWith(status: CardStatus.loading));
+      print(state.matchEngine);
       final profile = await repository.getCompanyProfile(state.matchEngine!.currentItem!.content.symbol);
       Stocks currentStock = state.matchEngine!.currentItem!.content;
       currentStock.setCompanyDetails(profile);
 
       emit(state.copyWith(status: CardStatus.success, currentStock: currentStock));
     } catch (error) {
+      print(error);
       emit(state.copyWith(status: CardStatus.error));
     }
   }

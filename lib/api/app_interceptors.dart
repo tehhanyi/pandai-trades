@@ -1,15 +1,9 @@
 import 'package:dio/dio.dart';
 
-import 'local_repo.dart';
-import 'local_service.dart';
-
 class AppInterceptors extends Interceptor {
   final Dio dio;
-  late LocalRepository _repository;
 
-  AppInterceptors(this.dio) {
-    _repository = LocalRepository(service: LocalService());
-  }
+  AppInterceptors(this.dio);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
@@ -28,10 +22,7 @@ class AppInterceptors extends Interceptor {
         switch (err.response?.statusCode) {
           case 400:
             throw BadRequestException(err.requestOptions);
-          // case 401:
-          //   FirebaseAuth.instance.signOut().then((value) {
-          //   });
-
+          case 401:
             throw UnauthorizedException(err.requestOptions);
           case 403:
             throw UnauthorizedException(err.requestOptions);

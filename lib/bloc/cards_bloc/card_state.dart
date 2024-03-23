@@ -35,7 +35,7 @@ class CardsState extends Equatable {
   }) : items = items ?? [];
 
   @override
-  List<Object?> get props => [status, items];
+  List<Object?> get props => [status, items,matchEngine, items];
 
   CardsState copyWith({
     List<Stocks>? items,

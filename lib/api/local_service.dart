@@ -23,12 +23,12 @@ class LocalService {
     var list = List<Stocks>.from(json.decode(response).map((data) => Stocks.fromJson(data)));
     // var c = a.where((m) => b.contains(m['id'])).map((m) => m['name']);
     list.shuffle();
-    print (list. sublist(0,50));
     return list. sublist(0,50);
     // sharedPreferences.setString('watchlist', response.toString());
   }
 
   Future<Profile> getCompanyProfile(String symbol) async {
+    print("https://finnhub.io/api/v1/stock/profile2?symbol=$symbol&token=$apiKey");
     var response = await Api().dio.get('/stock/profile2?symbol=$symbol&token=$apiKey');
     Map responseBody = response.data;
     print('getCompanyProfile\n$response');

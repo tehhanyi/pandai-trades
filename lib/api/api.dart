@@ -16,9 +16,9 @@ class Api {
   static Dio createDio() {
     var dio = Dio(BaseOptions(
       baseUrl: baseUrl,
-      receiveTimeout: 30000,
-      connectTimeout: 30000,
-      sendTimeout: 30000,
+      receiveTimeout: 10000,
+      connectTimeout: 10000,
+      sendTimeout: 10000,
     ));
 
     dio.interceptors.addAll({AppInterceptors(dio)});
