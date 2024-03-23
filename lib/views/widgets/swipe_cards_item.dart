@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:swipe_cards/draggable_card.dart';
 import 'package:swipe_cards/swipe_cards.dart';
 import 'package:varsity_app/bloc/cards_bloc/card_bloc.dart';
+import 'package:varsity_app/bloc/watchlist_bloc/watchlist_bloc.dart';
 
 class SwipeCardItem extends StatefulWidget {
   SwipeCardItem({Key? key}) : super(key: key);
@@ -49,6 +50,7 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                 content: stock,
                 likeAction: () {
                   snackBar("Added ${stock.name} to Watchlist");
+                  BlocProvider.of<WatchListBloc>(context).add(AddWatchList(stock));
                   controller.play();
                   Future.delayed(Duration(seconds: 1)).then((value) => controller.stop());
                 },

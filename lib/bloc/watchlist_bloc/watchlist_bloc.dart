@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:swipe_cards/swipe_cards.dart';
 
 import '../../api/local_repo.dart';
 import '../../models/stocks.dart';
@@ -15,16 +14,9 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
     required this.repository,
   }) : super(WatchListState()) {
     on<GetAllItemsItems>(_mapGetAllItemsEventToState);
-    on<AddWatchList>(_mapUpdateEngineEventToState);
-    on<GetMoreInfo>(_mapGetMoreInfoEventToState);
-
-    // on<RemoveFoodCartItem>(_mapRemoveFoodCartItemEventToState);
-    // on<ClearFoodCart>(_mapClearFoodCartEventToState);
-    // on<ChangeMerchantWithPendingItem>(_mapChangeMerchantWithPendingItemEventToState);
-    // on<UpdateFoodCartItem>(_mapUpdateFoodCartItemEventToState);
-    // on<RedeemFoodCartItem>(_mapUpdateRedeemEventToState);
-    // on<UnredeemFoodCartItem>(_mapUpdateUnredeemEventToState);
-    // on<GetTotalFoodCartPoints>(_mapGetTotalFoodCartPointsEventToState);
+    on<AddWatchList>(_mapAddWatchListEventToState);
+    on<RemoveWatchList>(_mapRemoveWatchListEventToState);
+    // on<GetMoreInfo>(_mapGetMoreInfoEventToState);
   }
 
   void _mapGetAllItemsEventToState(GetAllItemsItems event, Emitter<WatchListState> emit) async {
@@ -37,25 +29,50 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
     }
   }
 
-  void _mapUpdateEngineEventToState(AddWatchList event, Emitter<WatchListState> emit) async {
-    var watchlist = state.watchlist;
-    watchlist.add(event.item);
-    emit(state.copyWith(watchlist: watchlist));
-  }
-
-  void _mapGetMoreInfoEventToState(GetMoreInfo event, Emitter<WatchListState> emit) async {
+  void _mapAddWatchListEventToState(AddWatchList event, Emitter<WatchListState> emit) async {
     try {
-      emit(state.copyWith(status: WatchListStatus.loading));
-      // final profile = await repository.getCompanyProfile(state.matchEngine!.currentItem!.content.symbol);
-      // Stocks currentStock = state.matchEngine!.currentItem!.content;
-      // currentStock.setCompanyDetails(profile);
+      List<Stocks> list = state.watchlist;
+      Stocks currentItem = event.item;
+      final info = await repository.getMarketInfo(currentItem.symbol);
+      print('AddWatchList setted');
+      currentItem.setMarketInfo(info);
+      list.add(currentItem);
+      await repository.updateWatchlist(list);
 
-      emit(state.copyWith(status: WatchListStatus.success, watchlist: []));
-    } catch (error) {
-      print(error);
-      emit(state.copyWith(status: WatchListStatus.error));
+      // await repository.addWatchlist(currentItem);
+
+      emit(state.copyWith(watchlist: list));
+    } catch(error){
+      print (error);
     }
   }
+
+  void _mapRemoveWatchListEventToState(RemoveWatchList event, Emitter<WatchListState> emit) async {
+    try {
+      List<Stocks> list = state.watchlist;
+      Stocks currentItem = event.item;
+      list.remove(currentItem);
+      await repository.updateWatchlist(list);
+
+      emit(state.copyWith(watchlist: list));
+    } catch(error){
+      print (error);
+    }
+  }
+
+  // void _mapGetMoreInfoEventToState(GetMoreInfo event, Emitter<WatchListState> emit) async {
+  //   try {
+  //     emit(state.copyWith(status: WatchListStatus.loading));
+  //     // final profile = await repository.getCompanyProfile(state.matchEngine!.currentItem!.content.symbol);
+  //     // Stocks currentStock = state.matchEngine!.currentItem!.content;
+  //     // currentStock.setCompanyDetails(profile);
+  //
+  //     emit(state.copyWith(status: WatchListStatus.success, watchlist: []));
+  //   } catch (error) {
+  //     print(error);
+  //     emit(state.copyWith(status: WatchListStatus.error));
+  //   }
+  // }
 
 
 // void _mapUpdateCardEventToState(AddFoodCartItem event, Emitter<FoodCartState> emit) async {

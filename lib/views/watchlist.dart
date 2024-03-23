@@ -41,6 +41,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> with SingleTickerProv
         ),
         //
         body:
+        //     child:
           // TabBarView(
         //   controller:_tabController,
         //   children: [
@@ -50,27 +51,5 @@ class _WatchlistScreenState extends State<WatchlistScreen> with SingleTickerProv
           // ], // OnGoingOrders(), ClaimsOrders()],
         // ),
     );
-
-      // ListView.builder(
-      //     shrinkWrap: true,
-      //     physics: const NeverScrollableScrollPhysics(),
-      //     itemCount: _renderCard().length,
-      //     itemBuilder: (BuildContext context, int index) => _renderCard()[index]);
-    // ListView.builder(
-    //   padding: const EdgeInsets.only(top: 0),
-    //   physics: const NeverScrollableScrollPhysics(),
-    //   itemCount: 1,
-    //   shrinkWrap: true,
-    //   itemBuilder: (context, index) => Card(
-    //     color: Colors.white70,
-    //     child: ListTile(
-    //       leading: CircleAvatar(
-    //         child: Text("$index"),
-    //       ),
-    //       title: const Text("Title"),
-    //       subtitle: const Text("Subtitle"),
-    //     ),
-    //   ),
-    // )
   }
 }

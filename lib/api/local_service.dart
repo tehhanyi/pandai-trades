@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:varsity_app/api/secret.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/stocks.dart';
 import 'api.dart';
@@ -28,20 +29,36 @@ class LocalService {
     return Profile.fromJson(responseBody);
   }
 
-  void addWatchlist() async {
-    var sharedPreferences = await SharedPreferences.getInstance();
-    final String response =
-    await rootBundle.loadString('assets/data/watchlist.json');
+  Future<MarketInfo> getMarketInfo(String symbol) async {
+    var url = Uri.parse("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=$vantageApiKey");
+    var response = await http.get(url);
+    print('getMarketInfo ${response.body}');
+    Map responseBody = json.decode(response.body);
 
-    sharedPreferences.setString('watchlist', response.toString());
+    return MarketInfo.fromJson(responseBody['Global Quote']);
+  }
+
+  Future<bool> addWatchlist(Stocks stock) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    List<Stocks> list = await getAllWatchlist();
+    list.add(stock);
+    sharedPreferences.setString('watchlist', Stocks.encode(list));
+    return true;
+  }
+
+  Future<bool> updateWatchlist(List<Stocks> stocks) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString('watchlist', Stocks.encode(stocks));
+    return true;
   }
 
   Future<List<Stocks>> getAllWatchlist() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     final String? response =  sharedPreferences.getString('watchlist');
-    if (response != null){
-
+    List<Stocks> list = [];
+    if (response != '' && response != null){
+      list = Stocks.decode(response);
     }
-    return [];
+    return list;
   }
 }
