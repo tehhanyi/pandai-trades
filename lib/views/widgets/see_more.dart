@@ -52,7 +52,7 @@ class _SeeMoreState extends State<SeeMore> {
     widgets.add(Center(child:Container(padding: EdgeInsets.all(5), child:Text("${stocks.name}", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.blueGrey)))));
     widgets.add(info("Industry", stocks.details!.industry));
     if (stocks.details!.currency != '') widgets.add(info("Currency", stocks.details!.currency!));
-    widgets.add(info("Website", stocks.details!.website));
+    if (stocks.details!.website != '') widgets.add(info("Website", stocks.details!.website));
     widgets.add(info("Market Capitalisation", "\$${stocks.details!.marketCapitalisation.toStringAsFixed(2)}"));
     if (stocks.details!.shareOutstanding != 0) widgets.add(info("Share Outstanding", "\$${stocks.details!.shareOutstanding.toStringAsFixed(2)}"));
 
