@@ -30,11 +30,13 @@ class _AppState extends State<MyApp> {
     return MultiProvider(
         providers: [
           BlocProvider<CardsBloc>(
-              create: (context) => CardsBloc(repository: _localRepository,
-              )..add(GetAllCardsItems())),
+              create: (context) => CardsBloc(repository: _localRepository,)
+                // ..add(GetAllCardsItems())
+          ),
           BlocProvider<WatchListBloc>(
-              create: (context) => WatchListBloc(repository: _localRepository,
-              )..add(GetAllItemsItems()))
+              create: (context) => WatchListBloc(repository: _localRepository,)
+                ..add(GetAllItemsItems())
+          )
           ],
         child: Sizer(builder: (context, orientation, deviceType) {
       return  Builder(builder: (context) {

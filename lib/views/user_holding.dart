@@ -14,7 +14,6 @@ class UserAssetsScreen extends StatefulWidget {
 class _UserAssetsScreenState extends State<UserAssetsScreen> {
 
   num formatPrice(String price) => num.parse(price.replaceAll(new RegExp(r'[^0-9.]'),''));
-
   Widget Asset(String assetName, int holdings, String price, List<num> changes){
     List<String> dates = [
       DateFormat('dd-MM').format(DateTime(2024, 3, 20)),
