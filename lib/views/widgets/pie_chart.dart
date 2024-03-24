@@ -48,7 +48,7 @@ class DonutState extends State<Donut> {
   Widget build(BuildContext context) {
     return Container(
       width: 60.w,
-      margin: EdgeInsets.only(top: 10.h, left:10, right:10) ,
+      margin: EdgeInsets.only(top: 1.h, left:10, right:10) ,
       padding: EdgeInsets.symmetric(horizontal: 3.h, vertical: 3.h),
       child: PieChart(
         dataMap: dataMap,

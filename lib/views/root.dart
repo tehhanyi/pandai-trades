@@ -38,7 +38,7 @@ class _RootScreenState extends State<RootScreen> {
     ];
 
     final rootTab = <BottomNavigationBarItem>[
-      BottomNavigationBarItem(icon: Icon(Icons.stacked_line_chart),activeIcon: Icon(Icons.pie_chart, color: selectedColor()), label: 'Portfolio'),
+      BottomNavigationBarItem(icon: Icon(Icons.pie_chart),activeIcon: Icon(Icons.pie_chart, color: selectedColor()), label: 'Portfolio'),
       BottomNavigationBarItem(icon: Icon(Icons.home_filled),activeIcon: Icon(Icons.home_filled, color: selectedColor()), label: 'Home'),
       BottomNavigationBarItem(icon: Icon(Icons.bar_chart), activeIcon: Icon(Icons.bar_chart, color: selectedColor()), label: 'Watchlist'),
     ];
