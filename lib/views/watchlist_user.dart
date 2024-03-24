@@ -32,7 +32,7 @@ class _WatchlistScreenState extends State<WatchlistUserScreen> {
               BlocProvider.of<WatchListBloc>(context)..add(RemoveWatchList(stock));
             });
             // Then show a snackbar.
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${stock.name} dismissed')));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${stock.name} removed from watchlist')));
           },
           // Show a red background as the item is swiped away.
           background: Container(color: Colors.red, child: Icon(Icons.restore_from_trash),),
@@ -57,7 +57,7 @@ class _WatchlistScreenState extends State<WatchlistUserScreen> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text('\$${stock.info!.change}',style: TextStyle(color: stock.info!.change.contains('-') ? Colors.red : Colors.green)),// style: TextStyle(color: Colors.grey)
-                          Text('1.08%' ,style: TextStyle(color: stock.info!.changePercent.contains('-') ? Colors.red : Colors.green))// style: TextStyle(color: Colors.grey)
+                          Text('${stock.info!.changePercent}' ,style: TextStyle(color: stock.info!.changePercent.contains('-') ? Colors.red : Colors.green))// style: TextStyle(color: Colors.grey)
                         ],
                       ),
                     )
