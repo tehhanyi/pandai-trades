@@ -22,6 +22,7 @@ class _WatchlistScreenState extends State<WatchlistUserScreen> {
 
   buyDialog(Stocks stock){
     int qty = 1;
+    if (stock.info!.openPrice != 'null')
     showDialog(
         context: context,
         builder: (BuildContext builderContext) {
@@ -126,7 +127,7 @@ class _WatchlistScreenState extends State<WatchlistUserScreen> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text('\$${stock.info!.change}',style: TextStyle(color: stock.info!.change.contains('-') ? Colors.red : Colors.green)),// style: TextStyle(color: Colors.grey)
-                          Text('${stock.info!.changePercent}' ,style: TextStyle(color: stock.info!.changePercent.contains('-') ? Colors.red : Colors.green))// style: TextStyle(color: Colors.grey)
+                          Text('${stock.info!.changePercent}%' ,style: TextStyle(color: stock.info!.changePercent.contains('-') ? Colors.red : Colors.green))// style: TextStyle(color: Colors.grey)
                         ],
                       ),
                     )

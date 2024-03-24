@@ -132,13 +132,13 @@ class MarketInfo {
   static fromJson(Map<dynamic, dynamic> json) => MarketInfo(
     openPrice: json["c"].toString(),
     change: json["d"].toString(),
-    changePercent: json["dp"].toString() + '%',
+    changePercent: json["dp"].toString(),
   );
 
   Map<String, dynamic> toJson() => {
-    "05. price": openPrice,
-    "09. change": change,
-    "10. change percent": changePercent,
+    "c": openPrice,
+    "d": change,
+    "dp": changePercent,
   };
 }
 
