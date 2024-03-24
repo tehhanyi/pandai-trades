@@ -34,11 +34,14 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
       List<Stocks> list = state.watchlist;
       Stocks currentItem = event.item;
       final info = await repository.getMarketInfo(currentItem.symbol);
-      print('AddWatchList setted');
-      currentItem.setMarketInfo(info);
-      list.add(currentItem);
-      await repository.updateWatchlist(list);
-
+      if (info == null){
+        print('API limit reached :(');
+      } else {
+        print('AddWatchList setted');
+        currentItem.setMarketInfo(info);
+        list.add(currentItem);
+        await repository.updateWatchlist(list);
+      }
       // await repository.addWatchlist(currentItem);
 
       emit(state.copyWith(watchlist: list));

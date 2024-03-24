@@ -17,23 +17,42 @@ class SwipeCardItem extends StatefulWidget {
 class _SwipeCardItemState extends State<SwipeCardItem> {
   final controller = ConfettiController();
   bool isCelebrating = false;
+  List<SwipeItem> _swipeItems = [];
   late MatchEngine _matchEngine;
 
-  void snackBar(String text){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(text),
-      duration: Duration(milliseconds: 500),
-    ));
-  }
+  void snackBar(String text) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text), duration: Duration(milliseconds: 500),));
+
   Widget flag(String text){
     return Container(
       margin: const EdgeInsets.all(15.0),
       padding: const EdgeInsets.all(3.0),
-// decoration: BoxDecoration(
-//     border: Border.all(color: Colors.green)
-// ),
       child: Text(text),
     );
+  }
+
+  @override
+  void initState() {
+    // BlocProvider.of<CardsBloc>(context).add(GetAllCardsItems());
+    for (var stock in BlocProvider.of<CardsBloc>(context).state.items) {
+      _swipeItems.add(SwipeItem(
+          content: stock,
+          likeAction: () {
+            snackBar("Added ${stock.name} to Watchlist");
+            BlocProvider.of<WatchListBloc>(context).add(AddWatchList(stock));
+            controller.play();
+            Future.delayed(Duration(seconds: 1)).then((value) => controller.stop());
+          },
+          nopeAction: () => snackBar("Not Interested in ${stock.name}"),
+          superlikeAction: () => snackBar("Buying ${stock.name}"),
+          onSlideUpdate: (SlideRegion? region) async {
+            print("Region $region");
+          }
+      ));
+    }
+    _matchEngine = MatchEngine(swipeItems: _swipeItems);
+    setState(() => _swipeItems = _swipeItems);
+    // BlocProvider.of<CardsBloc>(context).add(UpdateCurrentStock(_matchEngine.currentItem!.content));
+    super.initState();
   }
 
   @override
@@ -43,26 +62,7 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
       margin: EdgeInsets.only(bottom: 30.h),
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       child: BlocBuilder<CardsBloc, CardsState>(builder: (context, state){
-        if (state.items.isNotEmpty) {
-          List<SwipeItem> _swipeItems = [];
-          for (var stock in state.items) {
-            _swipeItems.add(SwipeItem(
-                content: stock,
-                likeAction: () {
-                  snackBar("Added ${stock.name} to Watchlist");
-                  BlocProvider.of<WatchListBloc>(context).add(AddWatchList(stock));
-                  controller.play();
-                  Future.delayed(Duration(seconds: 1)).then((value) => controller.stop());
-                },
-                nopeAction: () => snackBar("Not Interested in ${stock.name}"),
-                superlikeAction: () => snackBar("Buying ${stock.name}"),
-                onSlideUpdate: (SlideRegion? region) async {
-                  print("Region $region");
-                }
-            ));
-          }
-          _matchEngine = MatchEngine(swipeItems: _swipeItems);
-          BlocProvider.of<CardsBloc>(context).add(UpdateEngine(_matchEngine));
+        if (state.items.isNotEmpty && _swipeItems.isNotEmpty) {
           return Stack(
               children: [
                 SwipeCards(
@@ -96,8 +96,10 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                       duration: Duration(milliseconds: 500),
                     ));
                   },
-                  itemChanged: (SwipeItem item, int index) =>
-                      print("item: ${item.content.symbol}, index: $index"),
+                  itemChanged: (SwipeItem item, int index){
+                    print("item: ${item.content.symbol}, index: $index");
+                    BlocProvider.of<CardsBloc>(context).add(UpdateCurrentStock(_matchEngine.currentItem!.content));
+                  },
                   leftSwipeAllowed: true,
                   rightSwipeAllowed: true,
                   upSwipeAllowed: false,
@@ -112,15 +114,13 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
-                          onPressed: () {_matchEngine.currentItem?.nope();},
+                          onPressed: () =>_matchEngine.currentItem?.nope(),
                           child: Icon(Icons.cancel)),
                       // ElevatedButton(
                       //     onPressed: () {_matchEngine.currentItem?.superLike();},
                       //     child:Icon(Icons.add)),// Text("Superlike")),
                       ElevatedButton(
-                          onPressed: () {
-                            _matchEngine.currentItem?.like();
-                          },
+                          onPressed: () =>_matchEngine.currentItem?.like(),
                           child: Icon(Icons.add_chart))
                     ],
                   ),
@@ -132,7 +132,6 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                       blastDirectionality: BlastDirectionality.explosive,
                     )
                 ),
-
               ]);
         } else
           // if (state.status.isLoading){

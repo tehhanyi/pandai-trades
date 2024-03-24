@@ -15,7 +15,7 @@ class CardsBloc extends Bloc<CardEvent, CardsState> {
     required this.repository,
   }) : super(CardsState()) {
     on<GetAllCardsItems>(_mapGetAllCardsItemsEventToState);
-    on<UpdateEngine>(_mapUpdateEngineEventToState);
+    on<UpdateCurrentStock>(_mapUpdateStockEventToState);
     on<GetMoreInfo>(_mapGetMoreInfoEventToState);
 
     // on<RemoveFoodCartItem>(_mapRemoveFoodCartItemEventToState);
@@ -29,24 +29,26 @@ class CardsBloc extends Bloc<CardEvent, CardsState> {
 
   void _mapGetAllCardsItemsEventToState(GetAllCardsItems event, Emitter<CardsState> emit) async {
     try {
+      emit(state.copyWith(status: CardStatus.loading));
       final stocks = await repository.getAllStocks();
 
-      emit(state.copyWith(items: stocks));
+      emit(state.copyWith(status: CardStatus.success, items: stocks, currentStock: stocks[0]));
     } catch (error) {
       emit(state.copyWith(status: CardStatus.error));
     }
   }
 
-  void _mapUpdateEngineEventToState(UpdateEngine event, Emitter<CardsState> emit) async {
-    emit(state.copyWith(matchEngine: event.engine));
+  void _mapUpdateStockEventToState(UpdateCurrentStock event, Emitter<CardsState> emit) async {
+    emit(state.copyWith(currentStock: event.currentItem));
   }
 
   void _mapGetMoreInfoEventToState(GetMoreInfo event, Emitter<CardsState> emit) async {
     try {
       emit(state.copyWith(status: CardStatus.loading));
-      print(state.matchEngine);
-      final profile = await repository.getCompanyProfile(state.matchEngine!.currentItem!.content.symbol);
-      Stocks currentStock = state.matchEngine!.currentItem!.content;
+      // print(state.matchEngine);
+      Stocks currentStock = state.currentStock!;
+      final profile = await repository.getCompanyProfile(currentStock.symbol);//state.matchEngine!.currentItem!.content.symbol);
+      // Stocks currentStock = state.matchEngine!.currentItem!.content;
       currentStock.setCompanyDetails(profile);
 
       emit(state.copyWith(status: CardStatus.success, currentStock: currentStock));

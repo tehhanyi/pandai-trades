@@ -29,12 +29,15 @@ class LocalService {
     return Profile.fromJson(responseBody);
   }
 
-  Future<MarketInfo> getMarketInfo(String symbol) async {
+  Future<MarketInfo?> getMarketInfo(String symbol) async {
     var url = Uri.parse("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=$vantageApiKey");
     var response = await http.get(url);
-    print('getMarketInfo ${response.body}');
     Map responseBody = json.decode(response.body);
-
+    if (responseBody['Information'] != null){
+      print(responseBody['Information']);
+      return null;
+    }
+    print('getMarketInfo ${response.body}');
     return MarketInfo.fromJson(responseBody['Global Quote']);
   }
 

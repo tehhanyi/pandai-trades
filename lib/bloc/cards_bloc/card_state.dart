@@ -17,7 +17,7 @@ extension CardStatusX on CardStatus {
 class CardsState extends Equatable {
   final List<Stocks> items;
   final Stocks? currentStock;
-  final MatchEngine? matchEngine;
+  // final MatchEngine? matchEngine;
 
   // final FoodCartItem? pendingFoodCartItem;
   final CardStatus status;
@@ -28,14 +28,14 @@ class CardsState extends Equatable {
     this.status = CardStatus.initial,
     List<Stocks>? items,
     this.currentStock,
-    this.matchEngine
+    // this.matchEngine
     // this.pendingFoodCartItem,
     // this.deductedBalance,
     // this.totalDeductedPoints = 0,
   }) : items = items ?? [];
 
   @override
-  List<Object?> get props => [status, items,matchEngine, items];
+  List<Object?> get props => [status, items, items];
 
   CardsState copyWith({
     List<Stocks>? items,
@@ -50,7 +50,7 @@ class CardsState extends Equatable {
         status: status ?? this.status,
         items: items ?? this.items,
         currentStock: currentStock ?? this.currentStock,
-        matchEngine: matchEngine ?? this.matchEngine
+        // matchEngine: matchEngine ?? this.matchEngine
         // pendingFoodCartItem: pendingFoodCartItem ?? this.pendingFoodCartItem,
         // // deductedBalance: deductedBalance ?? this.deductedBalance,
         // totalDeductedPoints: totalDeductedPoints ?? this.totalDeductedPoints

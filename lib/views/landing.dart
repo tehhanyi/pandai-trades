@@ -79,7 +79,7 @@ class _LandingScreenState extends State<LandingScreen> {
                     minHeight: 10.h,
                     parallaxEnabled: true,
                     parallaxOffset: .5,
-                    body: SwipeCardItem(),
+                    body: SwipeCardItem(),//(getStocks: ),
                     panelBuilder: (sc) => SeeMore(sc: sc),
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(18.0),

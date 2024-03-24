@@ -16,8 +16,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _controller = AnimationController(vsync: this, duration: Duration(seconds: 3),);
     WidgetsFlutterBinding.ensureInitialized();
     WidgetsBinding.instance.addPostFrameCallback((_) =>
-    Future.delayed(Duration(seconds: 3)).then((value) async =>
-    await Navigator.push(context, MaterialPageRoute(builder: (context) =>  RootScreen(tab: 1)))));
+        Future.delayed(Duration(seconds: 3)).then((value) async =>
+        await Navigator.push(context, MaterialPageRoute(builder: (context) =>  RootScreen(tab: 1)))));
     super.initState();
   }
 

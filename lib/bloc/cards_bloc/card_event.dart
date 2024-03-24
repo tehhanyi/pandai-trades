@@ -9,18 +9,19 @@ class GetAllCardsItems extends CardEvent {
   List<Object?> get props => [];
 }
 
-class UpdateEngine extends CardEvent {
-  final MatchEngine engine;
+class UpdateCurrentStock extends CardEvent {
+  final Stocks currentItem;
 
-  const UpdateEngine(this.engine);
+  const UpdateCurrentStock(this.currentItem);
 
   @override
   List<Object?> get props => [];
 }
 
 class GetMoreInfo extends CardEvent {
-  // final Stocks currentItem;
 
+  // final Stocks currentItem;
+  //
   // const GetMoreInfo(this.currentItem);
 
   @override

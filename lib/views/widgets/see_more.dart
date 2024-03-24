@@ -81,7 +81,7 @@ class _SeeMoreState extends State<SeeMore> {
               child: Text("Read more of security", style: TextStyle(fontSize: 20.sp, color: Colors.black)),
             ),
             BlocBuilder<CardsBloc, CardsState>(builder: (context, state){
-              if (state.status.isSuccess && state.currentStock != null)
+              if (state.status.isSuccess && state.currentStock!.details != null)
                 return stockDetails(state.currentStock!);
               else if (state.status.isLoading)
                 return Column(
@@ -95,7 +95,7 @@ class _SeeMoreState extends State<SeeMore> {
                     ),
                     Text('Retrieving data...please wait!')
                   ]);
-              else return Center(child: Text('There seems to be an error getting cards, please try again later'));
+              else return Center(child: Text('There seems to be an error getting market information, please try again later'));
               }),
           ],
         ));
