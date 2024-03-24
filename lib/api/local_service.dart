@@ -31,15 +31,20 @@ class LocalService {
   }
 
   Future<MarketInfo?> getMarketInfo(String symbol) async {
-    var url = Uri.parse("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=$vantageApiKey");
-    var response = await http.get(url);
-    Map responseBody = json.decode(response.body);
-    if (responseBody['Information'] != null){
-      print(responseBody['Information']);
-      return null;
-    }
-    print('getMarketInfo ${response.body}');
-    return MarketInfo.fromJson(responseBody['Global Quote']);
+    print("https://finnhub.io/api/v1/quote?symbol=$symbol&token=$apiKey");
+    var response = await Api().dio.get('/quote?symbol=$symbol&token=$apiKey');
+    Map responseBody = response.data;
+    print('getMarketInfo\n$response');
+    // print('function=GLOBAL_QUOTE&symbol=$symbol&apikey=$vantageApiKey');
+    // var url = Uri.parse("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=406CCPGVE4VPOVG7");
+    // var response = await http.get(url,);// headers: {"apikey" : "$vantageApiKey"});
+    // Map responseBody = json.decode(response.body);
+    // if (responseBody['Information'] != null){
+    //   print(responseBody['Information']);
+    //   return null;
+    // }
+    // print('getMarketInfo ${response.body}');
+    return MarketInfo.fromJson(responseBody); //['Global Quote']
   }
 
   Future<bool> addWatchlist(Stocks stock) async {

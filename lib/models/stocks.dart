@@ -124,10 +124,15 @@ class MarketInfo {
     // this.lastPrice = 0
   });
 
-  static fromJson(Map<String, dynamic> json) => MarketInfo(
-    openPrice: json["05. price"],
-    change: json["09. change"],
-    changePercent: json["10. change percent"],
+  // static fromJson(Map<String, dynamic> json) => MarketInfo(
+  //   openPrice: json["05. price"],
+  //   change: json["09. change"],
+  //   changePercent: json["10. change percent"],
+  // );
+  static fromJson(Map<dynamic, dynamic> json) => MarketInfo(
+    openPrice: json["c"].toString(),
+    change: json["d"].toString(),
+    changePercent: json["dp"].toString() + '%',
   );
 
   Map<String, dynamic> toJson() => {
