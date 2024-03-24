@@ -63,7 +63,7 @@ class Stocks {
     return data;
   }
 
-  setCompanyDetails (Profile profile) => details = profile;
+  setCompanyDetails (Profile? profile) => details = profile;
   setMarketInfo (MarketInfo market) => info = market;
 
 }

@@ -9,7 +9,7 @@ class LocalRepository {
 
   Future<List<Stocks>> getAllStocks() async => service.getAllStocks();
 
-  Future<Profile> getCompanyProfile(String symbol) async => service.getCompanyProfile(symbol);
+  Future<Profile?> getCompanyProfile(String symbol) async => service.getCompanyProfile(symbol);
 
   Future<MarketInfo?> getMarketInfo(String symbol) async => service.getMarketInfo(symbol);
 

@@ -7,8 +7,8 @@ extension CardStatusX on CardStatus {
   bool get isSuccess => this == CardStatus.success;
   bool get isError => this == CardStatus.error;
   bool get isLoading => this == CardStatus.loading;
-  bool get isDetailsLoading => this == CardStatus.cardLoading;
-  bool get isDetailsLoaded => this == CardStatus.cardLoaded;
+  // bool get isCardLoading => this == CardStatus.cardLoading;
+  bool get isCardLoaded => this == CardStatus.cardLoaded;
 
 // bool get isDataChange => this == FoodCartStatus.dataChange;
   // bool get isMerchantChange => this == FoodCartStatus.merchantChange;
@@ -17,7 +17,7 @@ extension CardStatusX on CardStatus {
 class CardsState extends Equatable {
   final List<Stocks> items;
   final Stocks? currentStock;
-  // final MatchEngine? matchEngine;
+  final MatchEngine? matchEngine;
 
   // final FoodCartItem? pendingFoodCartItem;
   final CardStatus status;
@@ -28,7 +28,7 @@ class CardsState extends Equatable {
     this.status = CardStatus.initial,
     List<Stocks>? items,
     this.currentStock,
-    // this.matchEngine
+    this.matchEngine
     // this.pendingFoodCartItem,
     // this.deductedBalance,
     // this.totalDeductedPoints = 0,
@@ -50,7 +50,7 @@ class CardsState extends Equatable {
         status: status ?? this.status,
         items: items ?? this.items,
         currentStock: currentStock ?? this.currentStock,
-        // matchEngine: matchEngine ?? this.matchEngine
+        matchEngine: matchEngine ?? this.matchEngine
         // pendingFoodCartItem: pendingFoodCartItem ?? this.pendingFoodCartItem,
         // // deductedBalance: deductedBalance ?? this.deductedBalance,
         // totalDeductedPoints: totalDeductedPoints ?? this.totalDeductedPoints

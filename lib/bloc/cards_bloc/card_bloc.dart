@@ -16,23 +16,15 @@ class CardsBloc extends Bloc<CardEvent, CardsState> {
   }) : super(CardsState()) {
     on<GetAllCardsItems>(_mapGetAllCardsItemsEventToState);
     on<UpdateCurrentStock>(_mapUpdateStockEventToState);
+    on<UpdateEngine>(_mapUpdateEngineEventToState);
     on<GetMoreInfo>(_mapGetMoreInfoEventToState);
-
-    // on<RemoveFoodCartItem>(_mapRemoveFoodCartItemEventToState);
-    // on<ClearFoodCart>(_mapClearFoodCartEventToState);
-    // on<ChangeMerchantWithPendingItem>(_mapChangeMerchantWithPendingItemEventToState);
-    // on<UpdateFoodCartItem>(_mapUpdateFoodCartItemEventToState);
-    // on<RedeemFoodCartItem>(_mapUpdateRedeemEventToState);
-    // on<UnredeemFoodCartItem>(_mapUpdateUnredeemEventToState);
-    // on<GetTotalFoodCartPoints>(_mapGetTotalFoodCartPointsEventToState);
   }
 
   void _mapGetAllCardsItemsEventToState(GetAllCardsItems event, Emitter<CardsState> emit) async {
     try {
-      emit(state.copyWith(status: CardStatus.loading));
       final stocks = await repository.getAllStocks();
 
-      emit(state.copyWith(status: CardStatus.success, items: stocks, currentStock: stocks[0]));
+      emit(state.copyWith(status:CardStatus.cardLoaded, items: stocks, currentStock: stocks[0]));
     } catch (error) {
       emit(state.copyWith(status: CardStatus.error));
     }
@@ -42,11 +34,14 @@ class CardsBloc extends Bloc<CardEvent, CardsState> {
     emit(state.copyWith(currentStock: event.currentItem));
   }
 
+  void _mapUpdateEngineEventToState(UpdateEngine event, Emitter<CardsState> emit) async {
+    emit(state.copyWith(matchEngine: event.engine, currentStock: event.engine.currentItem!.content));
+  }
+
   void _mapGetMoreInfoEventToState(GetMoreInfo event, Emitter<CardsState> emit) async {
     try {
       emit(state.copyWith(status: CardStatus.loading));
-      // print(state.matchEngine);
-      Stocks currentStock = state.currentStock!;
+      Stocks currentStock = state.currentStock!; //event.stock;
       final profile = await repository.getCompanyProfile(currentStock.symbol);//state.matchEngine!.currentItem!.content.symbol);
       // Stocks currentStock = state.matchEngine!.currentItem!.content;
       currentStock.setCompanyDetails(profile);

@@ -33,7 +33,7 @@ class _SeeMoreState extends State<SeeMore> {
 
   dynamic formatImagePath(String? imagePath) {
     if (imagePath == null || imagePath.isEmpty) {
-      return 'https://cpworldgroup.com/wp-content/uploads/2021/01/placeholder.png';
+      return Image.network('https://cpworldgroup.com/wp-content/uploads/2021/01/placeholder.png', width: 30.w, fit: BoxFit.cover);
     } else if (imagePath.contains('png')) {
       return Image.network(imagePath, width: 30.w, fit: BoxFit.cover);
     } else if (imagePath.contains('svg')){
@@ -55,7 +55,6 @@ class _SeeMoreState extends State<SeeMore> {
     widgets.add(info("Website", stocks.details!.website));
     widgets.add(info("Market Capitalisation", "\$${stocks.details!.marketCapitalisation.toStringAsFixed(2)}"));
     if (stocks.details!.shareOutstanding != 0) widgets.add(info("Share Outstanding", "\$${stocks.details!.shareOutstanding.toStringAsFixed(2)}"));
-
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
   }
@@ -81,7 +80,7 @@ class _SeeMoreState extends State<SeeMore> {
               child: Text("Read more of security", style: TextStyle(fontSize: 20.sp, color: Colors.black)),
             ),
             BlocBuilder<CardsBloc, CardsState>(builder: (context, state){
-              if (state.status.isSuccess && state.currentStock!.details != null)
+              if (state.currentStock!= null && state.status.isSuccess && state.currentStock!.details != null)
                 return stockDetails(state.currentStock!);
               else if (state.status.isLoading)
                 return Column(
@@ -95,8 +94,12 @@ class _SeeMoreState extends State<SeeMore> {
                     ),
                     Text('Retrieving data...please wait!')
                   ]);
-              else return Center(child: Text('There seems to be an error getting market information, please try again later'));
-              }),
+              else return Center(
+                    child:Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        child: Text('We could not fetch market information for this security, please try again later!', style: TextStyle(color: Colors.black),softWrap: true, textAlign: TextAlign.center))
+                );
+            }),
           ],
         ));
   }

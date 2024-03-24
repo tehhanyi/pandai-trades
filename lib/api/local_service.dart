@@ -20,11 +20,12 @@ class LocalService {
     // sharedPreferences.setString('watchlist', response.toString());
   }
 
-  Future<Profile> getCompanyProfile(String symbol) async {
+  Future<Profile?> getCompanyProfile(String symbol) async {
     print("https://finnhub.io/api/v1/stock/profile2?symbol=$symbol&token=$apiKey");
     var response = await Api().dio.get('/stock/profile2?symbol=$symbol&token=$apiKey');
     Map responseBody = response.data;
     print('getCompanyProfile\n$response');
+    if(responseBody.isEmpty) return null;
 
     return Profile.fromJson(responseBody);
   }

@@ -18,7 +18,7 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
   final controller = ConfettiController();
   bool isCelebrating = false;
   List<SwipeItem> _swipeItems = [];
-  late MatchEngine _matchEngine;
+  MatchEngine matchEngine = MatchEngine();
 
   void snackBar(String text) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text), duration: Duration(milliseconds: 500),));
 
@@ -32,26 +32,24 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
 
   @override
   void initState() {
-    // BlocProvider.of<CardsBloc>(context).add(GetAllCardsItems());
-    for (var stock in BlocProvider.of<CardsBloc>(context).state.items) {
-      _swipeItems.add(SwipeItem(
-          content: stock,
-          likeAction: () {
-            snackBar("Added ${stock.name} to Watchlist");
-            BlocProvider.of<WatchListBloc>(context).add(AddWatchList(stock));
-            controller.play();
-            Future.delayed(Duration(seconds: 1)).then((value) => controller.stop());
-          },
-          nopeAction: () => snackBar("Not Interested in ${stock.name}"),
-          superlikeAction: () => snackBar("Buying ${stock.name}"),
-          onSlideUpdate: (SlideRegion? region) async {
-            print("Region $region");
-          }
-      ));
-    }
-    _matchEngine = MatchEngine(swipeItems: _swipeItems);
-    setState(() => _swipeItems = _swipeItems);
-    // BlocProvider.of<CardsBloc>(context).add(UpdateCurrentStock(_matchEngine.currentItem!.content));
+    BlocProvider.of<CardsBloc>(context).add(GetAllCardsItems());
+    // for (var stock in BlocProvider.of<CardsBloc>(context).state.items) {
+    //   _swipeItems.add(SwipeItem(
+    //       content: stock,
+    //       likeAction: () {
+    //         snackBar("Added ${stock.name} to Watchlist");
+    //         BlocProvider.of<WatchListBloc>(context).add(AddWatchList(stock));
+    //         controller.play();
+    //         Future.delayed(Duration(seconds: 1)).then((value) => controller.stop());
+    //       },
+    //       nopeAction: () => snackBar("Not Interested in ${stock.name}"),
+    //       superlikeAction: () => snackBar("Buying ${stock.name}"),
+    //       onSlideUpdate: (SlideRegion? region) async {
+    //         print("Region $region");
+    //       }
+    //   ));
+    // }
+    // matchEngine = MatchEngine(swipeItems: _swipeItems);
     super.initState();
   }
 
@@ -61,12 +59,33 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
       padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 5.w),
       margin: EdgeInsets.only(bottom: 30.h),
       height: MediaQuery.of(context).size.height - kToolbarHeight,
-      child: BlocBuilder<CardsBloc, CardsState>(builder: (context, state){
-        if (state.items.isNotEmpty && _swipeItems.isNotEmpty) {
+      child: BlocListener<CardsBloc, CardsState>(listener: (context, state) {
+        if (state.status.isCardLoaded) {
+          for (var stock in state.items) {
+            _swipeItems.add(SwipeItem(
+                content: stock,
+                likeAction: () {
+                  snackBar("Added ${stock.name} to Watchlist");
+                  BlocProvider.of<WatchListBloc>(context).add(AddWatchList(stock));
+                  controller.play();
+                  Future.delayed(Duration(seconds: 1)).then((value) => controller.stop());
+                },
+                nopeAction: () => snackBar("Not Interested in ${stock.name}"),
+                superlikeAction: () => snackBar("Buying ${stock.name}"),
+                onSlideUpdate: (SlideRegion? region) async {
+                  print("Region $region");
+                }
+            ));
+          }
+          matchEngine = MatchEngine(swipeItems: _swipeItems);
+          BlocProvider.of<CardsBloc>(context).add(UpdateEngine(matchEngine));
+          setState(() => _swipeItems = _swipeItems);
+        }}, child: BlocBuilder<CardsBloc, CardsState>(builder: (context, state){
+        if (state.items.isNotEmpty) {
           return Stack(
               children: [
                 SwipeCards(
-                  matchEngine: _matchEngine,
+                  matchEngine: matchEngine,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                         decoration: BoxDecoration(
@@ -98,7 +117,7 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                   },
                   itemChanged: (SwipeItem item, int index){
                     print("item: ${item.content.symbol}, index: $index");
-                    BlocProvider.of<CardsBloc>(context).add(UpdateCurrentStock(_matchEngine.currentItem!.content));
+                    BlocProvider.of<CardsBloc>(context).add(UpdateCurrentStock(matchEngine.currentItem!.content));
                   },
                   leftSwipeAllowed: true,
                   rightSwipeAllowed: true,
@@ -114,13 +133,13 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
-                          onPressed: () =>_matchEngine.currentItem?.nope(),
+                          onPressed: () =>matchEngine.currentItem?.nope(),
                           child: Icon(Icons.cancel)),
                       // ElevatedButton(
-                      //     onPressed: () {_matchEngine.currentItem?.superLike();},
+                      //     onPressed: () {matchEngine.currentItem?.superLike();},
                       //     child:Icon(Icons.add)),// Text("Superlike")),
                       ElevatedButton(
-                          onPressed: () =>_matchEngine.currentItem?.like(),
+                          onPressed: () =>matchEngine.currentItem?.like(),
                           child: Icon(Icons.add_chart))
                     ],
                   ),
@@ -148,7 +167,7 @@ class _SwipeCardItemState extends State<SwipeCardItem> {
         // } else {// if (state.status.isError){
         //   return Center(child: Text('There seems to be an error getting cards, please try again later'));
         // }
-    }));
+    })));
 
   }
 
