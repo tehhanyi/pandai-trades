@@ -45,7 +45,7 @@ class _UserAssetsScreenState extends State<UserAssetsScreen> {
     return Scaffold(
         appBar: AppBar(
           title:Row(children: [
-            Text('Portfolio', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24.sp)),
+            Text('My Holdings', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24.sp)),
             Spacer(),
             Image.asset('assets/images/panda_stonk.png', height: 12.h, fit: BoxFit.fitHeight),
           ]),
