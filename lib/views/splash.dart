@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       radius: 11.w,
                     ),
                     SizedBox(width: 1.w),
-                    Text('PandaiTrades',
+                    Text('Financial Education',
                         style: TextStyle(fontSize: 30.sp, color: Colors.white,decoration: TextDecoration.none))
                   ],
                 )
